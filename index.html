@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FoodExpress | Food Delivery</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff8f0;
+      color: #292524;
+    }
+    header {
+      background: #e85d04;
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    main {
+      max-width: 850px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 18px;
+    }
+    .item {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #ddd;
+    }
+    button {
+      background: #e85d04;
+      color: white;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FoodExpress</h1>
+    <p>Fresh food, delivered to your door.</p>
+  </header>
+
+  <main>
+    <h2>Our Menu</h2>
+    <p>Explore your favourite meals.</p>
+
+    <section class="menu">
+      <article class="item">
+        <h3>Veg Pizza</h3>
+        <p>Fresh vegetables and cheese.</p>
+        <p>₹199</p>
+        <button onclick="addToCart('Veg Pizza', 199)">Add to cart</button>
+      </article>
+
+      <article class="item">
+        <h3>Veg Burger</h3>
+        <p>Crispy patty with fresh toppings.</p>
+        <p>₹129</p>
+        <button onclick="addToCart('Veg Burger', 129)">Add to cart</button>
+      </article>
+
+      <article class="item">
+        <h3>Masala Dosa</h3>
+        <p>Crispy dosa with potato filling.</p>
+        <p>₹99</p>
+        <button onclick="addToCart('Masala Dosa', 99)">Add to cart</button>
+      </article>
+    </section>
+
+    <h2>Your Cart</h2>
+    <p id="cart">Items: 0 | Total: ₹0</p>
+  </main>
+
+  <footer>
+    <p>FoodExpress — DevOps Assignment 3</p>
+  </footer>
+
+  <script>
+    let count = 0;
+    let total = 0;
+
+    function addToCart(name, price) {
+      count++;
+      total += price;
+      document.getElementById("cart").textContent =
+        `Items: ${count} | Total: ₹${total}`;
+    }
+  </script>
+</body>
+</html>
