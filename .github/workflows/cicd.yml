@@ -1,0 +1,72 @@
+name: Food Delivery CI/CD
+
+on:
+  push:
+    branches: ["main", "feature/**"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-package:
+    name: Build, Test and Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build website
+        run: |
+          mkdir -p dist
+          cp index.html dist/index.html
+          test -s dist/index.html
+
+      - name: Run automated tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Package website
+        run: |
+          cd dist
+          zip -r ../food-delivery-site.zip .
+          cd ..
+          test -s food-delivery-site.zip
+
+      - name: Upload website package
+        uses: actions/upload-artifact@v4
+        with:
+          name: food-delivery-site-package
+          path: food-delivery-site.zip
+
+      - name: Upload GitHub Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build-test-package
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
